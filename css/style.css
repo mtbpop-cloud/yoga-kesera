@@ -674,9 +674,254 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 900px) {
-    .instructor-wrapper { flexDirection: column; gap: 40px; }
+    .instructor-wrapper { flex-direction: column; gap: 40px; }
     .instructor-image img { height: 400px; }
     .qualifications-list { grid-template-columns: 1fr; }
+}
+
+/* =========================================================================
+   Lessons Section
+   ========================================================================= */
+.lessons-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.lesson-card {
+    background-color: var(--color-bg-light);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.lesson-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+}
+
+.lesson-img {
+    height: 220px;
+    position: relative;
+    overflow: hidden;
+}
+
+.lesson-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.lesson-card:hover .lesson-img img {
+    transform: scale(1.05);
+}
+
+.lesson-tag {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: var(--color-primary-dark);
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border-radius: 30px;
+}
+
+.lesson-body {
+    padding: 30px 24px;
+}
+
+.lesson-name {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.lesson-desc {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+    .lessons-grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
+}
+
+/* =========================================================================
+   Student Voices Section
+   ========================================================================= */
+.voices-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.voice-card {
+    background-color: var(--color-bg-base);
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+    border: 1px solid rgba(143, 160, 143, 0.1);
+    transition: transform var(--transition-fast);
+}
+
+.voice-card:hover {
+    transform: translateY(-5px);
+}
+
+.voice-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.voice-icon {
+    width: 60px;
+    height: 60px;
+    background-color: var(--color-primary-light);
+    color: var(--color-primary-dark);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.voice-meta {
+    flex: 1;
+}
+
+.voice-name {
+    font-size: 1.1rem;
+    font-family: var(--font-sans);
+    margin-bottom: 4px;
+}
+
+.voice-badge {
+    display: inline-block;
+    font-size: 0.8rem;
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    padding: 2px 10px;
+    border-radius: 20px;
+}
+
+.voice-text {
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--color-text-main);
+    line-height: 1.8;
+}
+
+@media (max-width: 768px) {
+    .voice-card { padding: 24px 20px; }
+    .voice-icon { width: 50px; height: 50px; font-size: 1.2rem; }
+}
+
+/* =========================================================================
+   Schedule Section
+   ========================================================================= */
+.schedule-wrapper {
+    background-color: var(--color-bg-light);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+}
+
+.schedule-month {
+    margin-bottom: 40px;
+}
+
+.schedule-title {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    color: var(--color-primary-dark);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--color-primary-light);
+}
+
+.schedule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.schedule-list li {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    background-color: var(--color-bg-base);
+    border-radius: 8px;
+    transition: background-color var(--transition-fast);
+}
+
+.schedule-list li:hover {
+    background-color: var(--color-bg-alt);
+}
+
+.schedule-date {
+    font-weight: 700;
+    width: 200px;
+    font-size: 1.1rem;
+    color: var(--color-text-main);
+}
+
+.schedule-info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.schedule-badge {
+    display: inline-block;
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 4px 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.schedule-badge.badge-online {
+    background-color: var(--color-secondary);
+}
+
+.schedule-location {
+    font-size: 1rem;
+}
+
+.schedule-note {
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 1px dashed var(--color-primary-light);
+    text-align: center;
+}
+
+.schedule-note p {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin-bottom: 24px;
+}
+
+.schedule-action {
+    display: flex;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .schedule-wrapper { padding: 30px 20px; }
+    .schedule-list li { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .schedule-date { width: auto; font-size: 1.05rem; }
+    .schedule-info { flex-wrap: wrap; }
 }
 
 /* =========================================================================
