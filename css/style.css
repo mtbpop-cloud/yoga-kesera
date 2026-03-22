@@ -3,18 +3,18 @@
    ========================================================================= */
    :root {
     /* Colors */
-    --color-primary: #8fa08f; /* Sage Green */
-    --color-primary-dark: #7a8a7a;
-    --color-primary-light: #d1dad1;
-    --color-secondary: #c2ac9a; /* Warm beige */
+    --color-primary: #e6a8af; /* Soft pastel pink */
+    --color-primary-dark: #cc8b91;
+    --color-primary-light: #fbe6e8;
+    --color-secondary: #e6d3c0; /* Warm beige */
     
     --color-text-main: #4a4a4a;
     --color-text-muted: #737373;
     --color-text-light: #ffffff;
     
-    --color-bg-base: #faf9f7; /* Off-white warm */
+    --color-bg-base: #fcf9f9; /* Warm off-white */
     --color-bg-light: #ffffff;
-    --color-bg-alt: #f0f2eb; /* Very pale green */
+    --color-bg-alt: #fff3f4; /* Very pale pink */
     
     --color-line: #00B900; /* LINE app color */
     
@@ -1162,3 +1162,135 @@ h1, h2, h3, h4, h5, h6 {
 .delay-1 { transition-delay: 0.1s; }
 .delay-2 { transition-delay: 0.2s; }
 .delay-3 { transition-delay: 0.3s; }
+
+/* =========================================================================
+   Custom LP Styles for Flyer Refactor
+   ========================================================================= */
+
+.mt-8 { margin-top: 4rem; }
+.mb-2 { margin-bottom: 1rem; }
+.w-full { width: 100%; }
+.d-inline-block { display: inline-block; }
+
+.check-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: var(--color-bg-light);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.check-list li {
+    font-size: 1.1rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.check-list li::before {
+    content: '\f058'; /* fa-circle-check */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    color: var(--color-primary); /* Use primary color for checkmark */
+    font-size: 1.4rem;
+}
+
+/* Offer badge on hero */
+.hero-badge {
+    display: inline-block;
+    background-color: #ffeb99; /* pale yellow like flyer */
+    color: #333;
+    font-weight: bold;
+    font-size: 1.4rem;
+    padding: 15px 30px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    line-height: 1.4;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transform: rotate(2deg);
+}
+
+.location-badge {
+    display: inline-block;
+    background-color: rgba(255,255,255,0.8);
+    color: var(--color-text-main);
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-weight: 500;
+    margin-top: 15px;
+    font-size: 1.1rem;
+}
+
+/* Details Box */
+.details-box {
+    background-color: var(--color-bg-alt);
+    border: 2px solid var(--color-primary-light);
+    border-radius: 12px;
+    padding: 40px;
+    margin-top: 30px;
+}
+
+.details-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.details-list li {
+    display: flex;
+    gap: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px dotted var(--color-primary-dark);
+}
+
+.details-list li:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.details-label {
+    min-width: 80px;
+    font-weight: bold;
+    color: var(--color-primary-dark);
+    font-size: 1.1rem;
+}
+
+.details-value {
+    flex: 1;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+.text-sm {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+}
+
+.highlight-text {
+    color: #e65c5c;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.contact-item {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.link-arrow {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.line-single li {
+    grid-column: 1 / -1 !important; /* Make qualifications list single column */
+}
+
