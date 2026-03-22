@@ -1294,3 +1294,25 @@ h1, h2, h3, h4, h5, h6 {
     grid-column: 1 / -1 !important; /* Make qualifications list single column */
 }
 
+/* =========================================================================
+   Mobile Optimization Utilities
+   ========================================================================= */
+
+.ib { display: inline-block; }
+.sp-only { display: none; }
+.pc-only { display: block; }
+
+@media (max-width: 768px) {
+    br.sp-only { display: block; }
+    span.sp-only { display: inline; }
+    div.sp-only, p.sp-only { display: block; }
+    .pc-only { display: none; }
+    
+    /* Adjust specific text sizes for mobile to ensure fitting */
+    .hero-title { font-size: 1.8rem; }
+    .hero-subtitle { font-size: 1.1rem; }
+    .concept-catch { font-size: 1.35rem; line-height: 1.5; }
+    .check-list li { font-size: 1.05rem; }
+    .cta-title { font-size: 1.6rem; }
+}
+
