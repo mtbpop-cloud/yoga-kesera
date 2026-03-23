@@ -268,9 +268,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .nav-list a {
-    font-family: var(--font-en);
-    font-size: 1.1rem;
-    font-style: italic;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 500;
     color: var(--color-text-main);
     position: relative;
 }
@@ -356,9 +356,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .mobile-nav-link {
-    font-family: var(--font-en);
-    font-size: 1.8rem;
-    font-style: italic;
+    font-family: var(--font-sans);
+    font-size: 1.4rem;
+    font-weight: 500;
     color: var(--color-text-main);
 }
 
