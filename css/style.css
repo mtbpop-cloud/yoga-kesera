@@ -1316,3 +1316,17 @@ h1, h2, h3, h4, h5, h6 {
     .cta-title { font-size: 1.6rem; }
 }
 
+.nav-jp {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 1.1rem;
+    font-style: normal;
+    color: var(--color-text-muted);
+    margin-top: 5px;
+    letter-spacing: 0.1em;
+}
+
+@media (max-width: 768px) {
+    .nav-jp { font-size: 1rem; }
+}
+
