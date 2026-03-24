@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yoga Kesera スケジュール管理</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(229, 231, 235, 0.5); }
+        .slide-up { animation: slideUp 0.3s ease-out forwards; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased min-h-screen pb-24 top-0">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-40 glass shadow-sm">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center relative">
+            <h1 class="text-xl font-bold flex items-center gap-2 tracking-tight text-gray-800">
+                <div class="w-8 h-8 rounded-lg bg-teal-600 text-white flex items-center justify-center text-sm shadow-sm">
+                    <i class="fa-solid fa-calendar-alt"></i>
+                </div>
+                Yoga Kesera Admin
+            </h1>
+            <button id="settingsBtn" class="w-10 h-10 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-100 hover:text-teal-600 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500">
+                <i class="fa-solid fa-cog text-xl"></i>
+            </button>
+            
+            <!-- Settings Panel -->
+            <div id="settingsPanel" class="hidden absolute top-full right-4 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-gray-100 p-5 z-50 origin-top-right transition-transform">
+                <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <i class="fa-brands fa-github"></i> GitHub 設定
+                </h3>
+                <div class="space-y-4 text-sm">
+                    <div>
+                        <label class="block font-medium text-gray-700 mb-1.5">Personal Access Token (PAT)</label>
+                        <input type="password" id="githubPat" class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:bg-white transition-colors outline-none" placeholder="ghp_...">
+                        <p class="text-xs text-gray-400 mt-1">※repo権限が必要です</p>
+                    </div>
+                    <div>
+                        <label class="block font-medium text-gray-700 mb-1.5">Owner / Repo</label>
+                        <input type="text" id="githubRepo" class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:bg-white transition-colors outline-none" placeholder="owner/repo">
+                    </div>
+                    <button id="saveSettingsBtn" class="w-full bg-gray-900 text-white py-2.5 rounded-xl font-medium hover:bg-black transition-colors shadow-sm">設定を保存</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-8 space-y-6">
+        
+        <!-- Add New Error / Validation -->
+        <div id="alertBox" class="hidden bg-red-50 text-red-600 px-4 py-3 rounded-xl border border-red-100 text-sm flex items-start gap-2">
+            <i class="fa-solid fa-triangle-exclamation mt-0.5"></i>
+            <span id="alertMsg">エラーメッセージ</span>
+        </div>
+
+        <!-- Add New Area -->
+        <section class="bg-white p-5 sm:p-6 rounded-2xl shadow-sm border border-gray-200">
+            <h2 class="text-base font-bold mb-4 text-gray-800 flex items-center gap-2">
+                <i class="fa-solid fa-plus text-teal-600"></i> 新規スケジュールの追加
+            </h2>
+            <form id="addForm" class="flex flex-col sm:flex-row gap-4 items-start sm:items-end">
+                <div class="flex-1 w-full">
+                    <label class="block text-xs font-semibold tracking-wide text-gray-500 mb-1.5">日付</label>
+                    <input type="date" id="newDateValue" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:bg-white transition-all outline-none" required>
+                </div>
+                <div class="flex-1 w-full">
+                    <label class="block text-xs font-semibold tracking-wide text-gray-500 mb-1.5">開催場所</label>
+                    <input type="text" id="newLocation" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:bg-white transition-all outline-none" placeholder="例: ミーティングルーム3" required>
+                </div>
+                <div class="w-full sm:w-auto">
+                    <button type="submit" class="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white px-6 py-2.5 rounded-xl font-medium transition-all shadow hover:shadow-md active:scale-95 whitespace-nowrap">
+                        追加する
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Current Schedule List -->
+        <section class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="p-5 sm:p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                <h2 class="text-base font-bold text-gray-800 flex items-center gap-2">
+                    <i class="fa-solid fa-list text-teal-600"></i> 登録済みスケジュール
+                </h2>
+                <button id="refreshBtn" class="text-gray-500 hover:text-teal-700 hover:bg-teal-50 transition-colors flex items-center gap-1.5 text-sm bg-white px-3 py-1.5 rounded-lg border border-gray-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+                    <i class="fa-solid fa-sync-alt" id="refreshIcon"></i> 再読込
+                </button>
+            </div>
+            
+            <div id="scheduleList" class="divide-y divide-gray-100">
+                <!-- Items injected here -->
+                <div class="text-center text-gray-400 py-12 px-4" id="emptyState">
+                    <i class="fa-solid fa-inbox text-3xl mb-3 text-gray-300"></i>
+                    <p class="text-sm font-medium">スケジュールがありません。<br>上のフォームから追加してください。</p>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <!-- Floating Save/Deploy Button -->
+    <div class="fixed bottom-0 left-0 right-0 p-4 bg-white/95 backdrop-blur-md border-t border-gray-200 flex justify-center z-40 transform transition-transform shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.05)]">
+        <button id="deployBtn" class="max-w-md w-full bg-gray-900 hover:bg-black text-white px-6 py-3.5 rounded-xl shadow-lg font-bold transition-all hover:shadow-xl active:scale-95 flex items-center justify-center gap-2.5 disabled:opacity-70 disabled:pointer-events-none">
+            <i class="fa-brands fa-github text-lg"></i> 変更をGitHubに保存
+        </button>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-24 right-4 bg-gray-900 text-white px-5 py-3.5 rounded-xl shadow-2xl transform translate-y-10 opacity-0 transition-all duration-300 z-50 flex items-center gap-3">
+        <i class="fa-solid fa-circle-check text-green-400 text-lg" id="toastIcon"></i>
+        <span id="toastMsg" class="text-sm font-medium">通知メッセージ</span>
+    </div>
+
+    <!-- Edit Modal Overlay -->
+    <div id="editModal" class="fixed inset-0 bg-gray-900/40 backdrop-blur-[2px] z-50 hidden flex items-center justify-center p-4 transition-opacity">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 transform transition-all scale-95 opacity-0" id="editModalContent">
+            <div class="flex justify-between items-center mb-5">
+                <h3 class="text-lg font-bold text-gray-800">予定の編集</h3>
+                <button id="closeEditBtn" class="text-gray-400 hover:text-gray-600 transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 mb-1.5">日付 (表示用)</label>
+                    <input type="text" id="editDate" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 outline-none transition-colors" placeholder="例: 3月10日(火)">
+                    <p class="text-[11px] text-gray-400 mt-1.5"><i class="fa-solid fa-info-circle"></i> ソートのため「M月D日(W)」の形式を推奨します</p>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 mb-1.5">開催場所</label>
+                    <input type="text" id="editLocation" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 outline-none transition-colors">
+                </div>
+            </div>
+            
+            <div class="flex gap-3 justify-end mt-8">
+                <button id="cancelEditBtn" class="px-5 py-2.5 text-gray-600 hover:bg-gray-100 rounded-xl transition-colors font-medium text-sm">キャンセル</button>
+                <button id="saveEditBtn" class="px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-xl shadow-sm hover:shadow transition-all font-medium text-sm">更新する</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data State
+        let scheduleData = [];
+        let fileSha = null;
+        let editingIndex = null;
+        
+        // Constants
+        const PAT_KEY = 'yk_admin_pat';
+        const REPO_KEY = 'yk_admin_repo';
+        const FILE_PATH = 'data/schedule.json';
+
+        // DOM elements map
+        const DOM = {
+            pat: document.getElementById('githubPat'),
+            repo: document.getElementById('githubRepo'),
+            settingsBtn: document.getElementById('settingsBtn'),
+            settingsPanel: document.getElementById('settingsPanel'),
+            saveSettingsBtn: document.getElementById('saveSettingsBtn'),
+            
+            addForm: document.getElementById('addForm'),
+            newDateValue: document.getElementById('newDateValue'),
+            newLocation: document.getElementById('newLocation'),
+            
+            list: document.getElementById('scheduleList'),
+            emptyState: document.getElementById('emptyState'),
+            refreshBtn: document.getElementById('refreshBtn'),
+            refreshIcon: document.getElementById('refreshIcon'),
+            
+            deployBtn: document.getElementById('deployBtn'),
+            
+            toast: document.getElementById('toast'),
+            toastIcon: document.getElementById('toastIcon'),
+            toastMsg: document.getElementById('toastMsg'),
+
+            editModal: document.getElementById('editModal'),
+            editModalContent: document.getElementById('editModalContent'),
+            editDate: document.getElementById('editDate'),
+            editLocation: document.getElementById('editLocation'),
+            cancelEditBtn: document.getElementById('cancelEditBtn'),
+            closeEditBtn: document.getElementById('closeEditBtn'),
+            saveEditBtn: document.getElementById('saveEditBtn'),
+
+            alertBox: document.getElementById('alertBox'),
+            alertMsg: document.getElementById('alertMsg')
+        };
+
+        const days = ['日', '月', '火', '水', '木', '金', '土'];
+        
+        // Format YYYY-MM-DD back to custom format "M月D日(W)"
+        function formatToCustomDate(dateStr) {
+            if (!dateStr) return '';
+            const d = new Date(dateStr);
+            if (isNaN(d.getTime())) return dateStr;
+            const m = d.getMonth() + 1;
+            const day = d.getDate();
+            const w = days[d.getDay()];
+            return `${m}月${day}日(${w})`;
+        }
+
+        // Parse custom format "M月D日(W)" using current year context properly to enable asc sorting
+        function parseCustomDate(str) {
+            if (!str) return new Date(0);
+            const match = str.match(/(\d+)月(\d+)日/);
+            if (!match) return new Date(0);
+            const m = parseInt(match[1], 10);
+            const d = parseInt(match[2], 10);
+            const now = new Date();
+            let y = now.getFullYear();
+            // simple edge case: if schedule added in Nov/Dec for Jan/Feb
+            if (now.getMonth() + 1 >= 11 && m <= 2) y += 1;
+            return new Date(y, m - 1, d);
+        }
+
+        function sortSchedule(data) {
+            return data.sort((a, b) => parseCustomDate(a.date) - parseCustomDate(b.date));
+        }
+
+        // --- Core Init ---
+        function init() {
+            const pat = localStorage.getItem(PAT_KEY) || '';
+            const repo = localStorage.getItem(REPO_KEY) || 'mtbpop-cloud/yoga-kesera';
+            
+            DOM.pat.value = pat;
+            DOM.repo.value = repo;
+
+            setupEventListeners();
+            
+            if (pat && repo && pat !== '') {
+                fetchData();
+            } else {
+                DOM.settingsPanel.classList.remove('hidden');
+                showAlert('GitHubのPAT(トークン)が設定されていません。右上の歯車アイコンから設定してください。');
+                renderList(); // show empty state
+            }
+        }
+
+        function setupEventListeners() {
+            // Settings Toggle
+            DOM.settingsBtn.addEventListener('click', () => {
+                DOM.settingsPanel.classList.toggle('hidden');
+            });
+            // Hide settings when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!DOM.settingsPanel.contains(e.target) && !DOM.settingsBtn.contains(e.target)) {
+                    DOM.settingsPanel.classList.add('hidden');
+                }
+            });
+
+            // Save settings
+            DOM.saveSettingsBtn.addEventListener('click', () => {
+                const patVal = DOM.pat.value.trim();
+                const repoVal = DOM.repo.value.trim();
+                if (!patVal || !repoVal) {
+                    alert('PATとリポジトリ名は必須です');
+                    return;
+                }
+                localStorage.setItem(PAT_KEY, patVal);
+                localStorage.setItem(REPO_KEY, repoVal);
+                DOM.settingsPanel.classList.add('hidden');
+                hideAlert();
+                showToast('設定を保存しました。読込中...', 'success');
+                fetchData();
+            });
+
+            // Data Reload
+            DOM.refreshBtn.addEventListener('click', fetchData);
+
+            // Add new
+            DOM.addForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const rawDate = DOM.newDateValue.value;
+                const loc = DOM.newLocation.value.trim();
+                if (!rawDate || !loc) return;
+
+                const formattedDate = formatToCustomDate(rawDate);
+                scheduleData = sortSchedule([...scheduleData, { date: formattedDate, location: loc }]);
+                
+                renderList();
+                DOM.addForm.reset();
+                showToast('予定を追加しました。', 'success');
+            });
+
+            // Deploy Changes
+            DOM.deployBtn.addEventListener('click', deployChanges);
+
+            // Edit Modal actions
+            DOM.cancelEditBtn.addEventListener('click', closeEditModal);
+            DOM.closeEditBtn.addEventListener('click', closeEditModal);
+            DOM.saveEditBtn.addEventListener('click', saveEdit);
+        }
+
+        // --- API & State Methods ---
+        async function fetchData() {
+            const pat = localStorage.getItem(PAT_KEY);
+            const repo = localStorage.getItem(REPO_KEY);
+            if (!pat || !repo) return;
+
+            DOM.refreshIcon.classList.add('animate-spin');
+            DOM.list.innerHTML = '';
+            DOM.emptyState.querySelector('p').innerHTML = 'データ取得中...<br><span class="text-xs mt-1 text-gray-300">GitHubからスケジュールを読み込んでいます</span>';
+            DOM.list.appendChild(DOM.emptyState);
+            DOM.emptyState.style.display = 'block';
+            hideAlert();
+
+            try {
+                const res = await fetch(`https://api.github.com/repos/${repo}/contents/${FILE_PATH}`, {
+                    headers: {
+                        'Authorization': `token ${pat}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+
+                if (!res.ok) {
+                    if (res.status === 401) throw new Error('認証エラー: PATが無効か権限がありません。');
+                    if (res.status === 404) throw new Error('File Not Found: リポジトリ名またはファイルパスが間違っています。');
+                    throw new Error(`HTTP ${res.status} error`);
+                }
+                
+                const dataRaw = await res.json();
+                fileSha = dataRaw.sha;
+                
+                // Decode from base64 (handle utf8 correctly)
+                const decodeStr = decodeURIComponent(escape(atob(dataRaw.content)));
+                scheduleData = sortSchedule(JSON.parse(decodeStr));
+                
+                renderList();
+            } catch (err) {
+                console.error(err);
+                showAlert(`データの取得に失敗しました: ${err.message}`);
+                DOM.emptyState.querySelector('p').innerHTML = '取得失敗';
+            } finally {
+                DOM.refreshIcon.classList.remove('animate-spin');
+            }
+        }
+
+        async function deployChanges() {
+            const pat = localStorage.getItem(PAT_KEY);
+            const repo = localStorage.getItem(REPO_KEY);
+            
+            if (!pat || !repo) {
+                showAlert('GitHub設定が済んでいません。');
+                window.scrollTo({top: 0, behavior: 'smooth'});
+                DOM.settingsPanel.classList.remove('hidden');
+                return;
+            }
+            if (!fileSha) {
+                showAlert('事前ロードが完了していないため保存できません。再読込をお試しください。');
+                return;
+            }
+
+            DOM.deployBtn.disabled = true;
+            const originalHTML = DOM.deployBtn.innerHTML;
+            DOM.deployBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-lg"></i> GitHubへ送信中...';
+
+            try {
+                const contentStr = JSON.stringify(scheduleData, null, 2) + '\n';
+                const encodedContent = btoa(unescape(encodeURIComponent(contentStr)));
+
+                const body = {
+                    message: "Update schedule.json via Admin UI (SPA)",
+                    content: encodedContent,
+                    sha: fileSha
+                };
+
+                const res = await fetch(`https://api.github.com/repos/${repo}/contents/${FILE_PATH}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${pat}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
+
+                if (!res.ok) throw new Error(`HTTP Error ${res.status}: パティエーションを確認してください。`);
+
+                const dataRes = await res.json();
+                fileSha = dataRes.content.sha; // update SHA
+                
+                showToast('保存が完了しました。数分後にサイトに反映されます。', 'success');
+            } catch (err) {
+                console.error(err);
+                showAlert(`保存エラー: ${err.message}`);
+            } finally {
+                DOM.deployBtn.disabled = false;
+                DOM.deployBtn.innerHTML = originalHTML;
+            }
+        }
+
+        // --- Render ---
+        function renderList() {
+            DOM.list.innerHTML = '';
+            
+            if (scheduleData.length === 0) {
+                DOM.emptyState.style.display = 'block';
+                DOM.emptyState.querySelector('p').innerHTML = 'スケジュールがありません。<br>上のフォームから追加してください。';
+                DOM.list.appendChild(DOM.emptyState);
+                return;
+            }
+
+            DOM.emptyState.style.display = 'none';
+
+            scheduleData.forEach((item, index) => {
+                // Parse date string to extract just Day / Weekday for visually appealing layout
+                const dObj = parseCustomDate(item.date);
+                const dayNum = dObj.getFullYear() > 1970 ? dObj.getDate() : '-';
+                const parts = (item.date || '').split('(');
+                const wMain = parts[1] ? parts[1].replace(/[()]/g, '') : '-';
+
+                const el = document.createElement('div');
+                el.className = 'group flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 sm:p-5 hover:bg-teal-50/30 transition-colors bg-white slide-up';
+                // slight stagger for slide-up
+                el.style.animationDelay = `${index * 0.05}s`;
+                el.style.opacity = '0';
+                
+                el.innerHTML = `
+                    <div class="flex items-center gap-4 flex-1 mb-4 sm:mb-0 w-full sm:w-auto">
+                        <div class="w-14 h-14 bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-gray-100 flex flex-col items-center justify-center flex-shrink-0 text-teal-800">
+                            <span class="text-[10px] font-bold uppercase text-gray-400 leading-none mb-1.5">${wMain}</span>
+                            <span class="font-extrabold text-xl leading-none">${dayNum}</span>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-bold text-gray-800 text-lg mb-0.5">${item.date}</div>
+                            <div class="text-sm font-medium text-gray-500 flex items-center gap-1.5">
+                                <i class="fa-solid fa-location-dot text-gray-400"></i> ${item.location}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 w-full sm:w-auto justify-end border-t sm:border-t-0 border-gray-100 pt-3 sm:pt-0 sm:ml-4">
+                        <button onclick="openEdit(${index})" class="flex-1 sm:flex-none px-4 py-2 text-sm font-semibold text-gray-600 bg-white border border-gray-200 rounded-xl hover:text-teal-700 hover:border-teal-300 hover:bg-teal-50 shadow-sm transition-all focus:ring-2 focus:ring-teal-100 outline-none flex justify-center items-center gap-1.5">
+                            <i class="fa-solid fa-pen text-[13px]"></i> 編集
+                        </button>
+                        <button onclick="deleteItem(${index})" class="flex-1 sm:flex-none px-4 py-2 text-sm font-semibold text-red-600 bg-white border border-red-100 rounded-xl hover:bg-red-50 hover:border-red-200 shadow-sm transition-all focus:ring-2 focus:ring-red-100 outline-none flex justify-center items-center gap-1.5 group-hover:opacity-100 ${scheduleData.length > 5 ? 'sm:opacity-40' : ''}">
+                            <i class="fa-solid fa-trash-alt text-[13px]"></i> <span class="sm:hidden">削除</span>
+                        </button>
+                    </div>
+                `;
+                DOM.list.appendChild(el);
+            });
+        }
+
+        // --- List Actions ---
+        window.deleteItem = function(index) {
+            if (confirm('この予定を削除してもよろしいですか？')) {
+                scheduleData.splice(index, 1);
+                renderList();
+                showToast('項目を削除しました。', 'success');
+            }
+        };
+
+        window.openEdit = function(index) {
+            editingIndex = index;
+            const item = scheduleData[index];
+            DOM.editDate.value = item.date;
+            DOM.editLocation.value = item.location;
+            
+            DOM.editModal.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                DOM.editModalContent.classList.remove('scale-95', 'opacity-0');
+            });
+        };
+
+        function closeEditModal() {
+            DOM.editModalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                DOM.editModal.classList.add('hidden');
+                editingIndex = null;
+            }, 200); // match transition
+        }
+
+        function saveEdit() {
+            if (editingIndex === null) return;
+            const newD = DOM.editDate.value.trim();
+            const newL = DOM.editLocation.value.trim();
+
+            if (!newD || !newL) {
+                alert('空白での保存はできません。');
+                return;
+            }
+
+            scheduleData[editingIndex].date = newD;
+            scheduleData[editingIndex].location = newL;
+            
+            // Re-sort after edit
+            scheduleData = sortSchedule(scheduleData);
+            
+            renderList();
+            closeEditModal();
+            showToast('予定を更新しました。', 'success');
+        }
+
+        // --- Feedback Utils ---
+        let toastTimeout;
+        function showToast(msg, type = 'success') {
+            DOM.toastMsg.textContent = msg;
+            DOM.toast.classList.remove('translate-y-10', 'opacity-0');
+            
+            if (type === 'success') {
+                DOM.toastIcon.className = 'fa-solid fa-circle-check text-green-400 text-lg';
+            } else if (type === 'error') {
+                DOM.toastIcon.className = 'fa-solid fa-circle-xmark text-red-500 text-lg';
+            } else {
+                DOM.toastIcon.className = 'fa-solid fa-circle-info text-blue-400 text-lg';
+            }
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                DOM.toast.classList.add('translate-y-10', 'opacity-0');
+            }, 4000);
+        }
+
+        function showAlert(msg) {
+            DOM.alertMsg.textContent = msg;
+            DOM.alertBox.classList.remove('hidden');
+        }
+        function hideAlert() {
+            DOM.alertBox.classList.add('hidden');
+        }
+
+        // Run
+        init();
+    </script>
+</body>
+</html>
