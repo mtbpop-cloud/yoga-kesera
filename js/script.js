@@ -78,4 +78,38 @@ document.addEventListener('DOMContentLoaded', () => {
             heroContent.classList.add('is-visible');
         }, 100);
     }
+
+    // --- Load Schedule Data ---
+    const scheduleTbody = document.getElementById('schedule-tbody');
+    if (scheduleTbody) {
+        // Show loading state
+        scheduleTbody.innerHTML = '<tr><td colspan="2" style="padding: 15px 0; text-align: center; color: #888;">読み込み中...</td></tr>';
+        
+        fetch('data/schedule.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                scheduleTbody.innerHTML = ''; // Clear loading text
+                data.forEach((item, index) => {
+                    const tr = document.createElement('tr');
+                    // Add bottom border to all except the last one
+                    if (index < data.length - 1) {
+                        tr.style.borderBottom = '1px solid rgba(0,0,0,0.05)';
+                    }
+                    tr.innerHTML = `
+                        <td style="padding: 8px 0; white-space: nowrap;">${item.date}</td>
+                        <td style="padding: 8px 0; word-break: keep-all;">${item.location}</td>
+                    `;
+                    scheduleTbody.appendChild(tr);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching schedule data:', error);
+                scheduleTbody.innerHTML = '<tr><td colspan="2" style="padding: 15px 0; text-align: center; color: #ff6b6b;">スケジュールの取得に失敗しました。</td></tr>';
+            });
+    }
 });
