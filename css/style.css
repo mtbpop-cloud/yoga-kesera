@@ -1332,3 +1332,61 @@ h1, h2, h3, h4, h5, h6 {
     .nav-jp { font-size: 1rem; }
 }
 
+/* --- Accordion Styles --- */
+.accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    background: var(--color-bg);
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    margin-bottom: 0;
+    transition: background var(--transition-fast);
+}
+
+.accordion-header:hover {
+    background: #fdfaf8;
+}
+
+.accordion-header .section-jp {
+    margin: 0;
+    font-size: 1.6rem;
+    color: var(--color-primary-dark);
+}
+
+.accordion-icon {
+    font-size: 1.2rem;
+    color: var(--color-primary);
+    transition: transform 0.3s ease;
+}
+
+.accordion-header.active .accordion-icon {
+    transform: rotate(180deg);
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out, opacity 0.4s ease-in-out;
+    opacity: 0;
+}
+
+.accordion-content.active {
+    max-height: 5000px;
+    opacity: 1;
+}
+
+.accordion-inner {
+    padding: 10px 0 20px;
+}
+
+@media (min-width: 769px) {
+    .accordion-header {
+        padding: 20px 30px;
+    }
+    .accordion-header .section-jp {
+        font-size: 1.8rem;
+    }
+}

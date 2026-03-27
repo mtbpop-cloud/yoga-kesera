@@ -112,4 +112,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 scheduleTbody.innerHTML = '<tr><td colspan="2" style="padding: 15px 0; text-align: center; color: #ff6b6b;">スケジュールの取得に失敗しました。</td></tr>';
             });
     }
+
+    // --- Accordion Logic ---
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+    
+    accordionHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+            header.classList.toggle('active');
+            const content = header.nextElementSibling;
+            
+            if (header.classList.contains('active')) {
+                content.classList.add('active');
+                // Forcing scroll animations to trigger if they were hidden
+                content.querySelectorAll('.fade-up, .fade-in-left, .fade-in-right').forEach(el => {
+                    el.classList.add('is-visible');
+                });
+            } else {
+                content.classList.remove('active');
+            }
+        });
+    });
 });
