@@ -1397,9 +1397,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Eliminate large section padding for accordion wrappers to reduce scroll amount */
-section.concept,
 section.lessons,
-section.instructor,
 section.voices,
 section.details {
     padding: 10px 0 !important;
