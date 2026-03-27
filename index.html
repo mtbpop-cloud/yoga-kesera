@@ -30,8 +30,8 @@
             <nav class="nav">
                 <ul class="nav-list">
                     <li><a href="#concept">コンセプト</a></li>
-                    <li><a href="#lessons">レッスンメニュー</a></li>
                     <li><a href="#instructor">講師紹介</a></li>
+                    <li><a href="#lessons">レッスンメニュー</a></li>
                     <li><a href="#voices">お客様のお声</a></li>
                     <li><a href="#schedule">スケジュール・詳細</a></li>
                 </ul>
@@ -47,8 +47,8 @@
         <div class="mobile-menu" id="mobile-menu">
             <ul class="mobile-nav-list">
                 <li><a href="#concept" class="mobile-nav-link">コンセプト</a></li>
-                <li><a href="#lessons" class="mobile-nav-link">レッスンメニュー</a></li>
                 <li><a href="#instructor" class="mobile-nav-link">講師紹介</a></li>
+                <li><a href="#lessons" class="mobile-nav-link">レッスンメニュー</a></li>
                 <li><a href="#voices" class="mobile-nav-link">お客様のお声</a></li>
                 <li><a href="#schedule" class="mobile-nav-link">スケジュール・詳細</a></li>
                 <li><a href="#schedule" class="mobile-nav-link">開催場所</a></li>
@@ -61,7 +61,13 @@
         <!-- Hero Section -->
         <section class="hero" id="home">
             <div class="hero-bg"></div>
-            <div class="hero-content fade-up">
+            <div class="hero-content fade-up" style="padding-top: calc(var(--header-height) + 20px);">
+                <!-- Added Top image here per request -->
+                <div style="width: 100vw; margin-left: calc(-50vw + 50%); text-align: center; margin-bottom: 30px;">
+                    <!-- '横幅いっぱいになるように' -> using 100vw on mobile but capped gracefully inside if needed -->
+                    <img src="images/Top.jpg" alt="YOGA KESERA トップ" style="width: 100%; display: block;">
+                </div>
+                
                 <h2 class="hero-title">
                     <span class="hero-title-en">YOGA KESERA</span>
                     <span class="ib">50代から始める！</span><br>
@@ -116,6 +122,38 @@
             </div>
         </section>
 
+        <!-- Instructor Section -->
+        <section class="section instructor bg-light" id="instructor">
+            <div class="container container-sm">
+                <div class="section-header fade-up text-center mb-5">
+                    <h2 class="section-jp">講師紹介</h2>
+                </div>
+                <div class="instructor-wrapper">
+                    <div class="instructor-image fade-in-left">
+                        <div class="img-wrapper">
+                            <!-- 添付いただいた画像を設定してください（ファイル名を instructor.png などにして images フォルダに配置） -->
+                            <img src="images/kao.jpeg" alt="YOGA KESERA あいか">
+                        </div>
+                    </div>
+                    <div class="instructor-info fade-in-right">
+                        <h3 class="instructor-name text-center" style="justify-content: center;">
+                            あいか
+                        </h3>
+                        
+                        <div class="qualifications">
+                            <h4 class="qualifications-title">サポート実績・資格</h4>
+                            <ul class="qualifications-list line-single">
+                                <li>年間90名の女性をサポート</li>
+                                <li>全米ヨガアライアンス RYT500</li>
+                                <li>シニアヨガアドバンスインストラクター</li>
+                                <li>産後トレーニングヨガインストラクター</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Lesson Menu Section -->
         <section class="section lessons" id="lessons">
             <div class="container">
@@ -162,38 +200,6 @@
                                     <p class="lesson-desc">ご友人やご家族など、気が置けないお仲間（2〜3名）と一緒に、プライベートな空間で楽しく受けられる少人数制レッスンです。</p>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Instructor Section -->
-        <section class="section instructor bg-light" id="instructor">
-            <div class="container container-sm">
-                <div class="section-header fade-up text-center mb-5">
-                    <h2 class="section-jp">講師紹介</h2>
-                </div>
-                <div class="instructor-wrapper">
-                    <div class="instructor-image fade-in-left">
-                        <div class="img-wrapper">
-                            <!-- 添付いただいた画像を設定してください（ファイル名を instructor.png などにして images フォルダに配置） -->
-                            <img src="images/kao.jpeg" alt="YOGA KESERA あいか">
-                        </div>
-                    </div>
-                    <div class="instructor-info fade-in-right">
-                        <h3 class="instructor-name text-center" style="justify-content: center;">
-                            あいか
-                        </h3>
-                        
-                        <div class="qualifications">
-                            <h4 class="qualifications-title">サポート実績・資格</h4>
-                            <ul class="qualifications-list line-single">
-                                <li>年間90名の女性をサポート</li>
-                                <li>全米ヨガアライアンス RYT500</li>
-                                <li>シニアヨガアドバンスインストラクター</li>
-                                <li>産後トレーニングヨガインストラクター</li>
-                            </ul>
                         </div>
                     </div>
                 </div>
@@ -346,8 +352,8 @@
             </div>
             <ul class="footer-nav">
                 <li><a href="#concept">コンセプト</a></li>
-                <li><a href="#lessons">レッスンメニュー</a></li>
                 <li><a href="#instructor">講師紹介</a></li>
+                <li><a href="#lessons">レッスンメニュー</a></li>
                 <li><a href="#voices">お客様のお声</a></li>
                 <li><a href="#schedule">スケジュール・詳細</a></li>
             </ul>
