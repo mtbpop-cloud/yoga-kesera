@@ -132,4 +132,29 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // --- Auto-open Accordion on Nav Link Click ---
+    const allAnchorLinks = document.querySelectorAll('a[href^="#"]');
+    allAnchorLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                const accordionHeader = targetElement.querySelector('.accordion-header');
+                if (accordionHeader && !accordionHeader.classList.contains('active')) {
+                    // Automatically open the target accordion section
+                    accordionHeader.classList.add('active');
+                    const content = accordionHeader.nextElementSibling;
+                    if (content) {
+                        content.classList.add('active');
+                        content.querySelectorAll('.fade-up, .fade-in-left, .fade-in-right').forEach(el => {
+                            el.classList.add('is-visible');
+                        });
+                    }
+                }
+            }
+        });
+    });
 });
