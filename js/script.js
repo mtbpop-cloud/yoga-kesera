@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const scheduleTbody = document.getElementById('schedule-tbody');
     if (scheduleTbody) {
         // Show loading state
-        scheduleTbody.innerHTML = '<tr><td colspan="2" style="padding: 15px 0; text-align: center; color: #888;">読み込み中...</td></tr>';
+        scheduleTbody.innerHTML = '<tr><td colspan="1" style="padding: 15px 0; text-align: center; color: #888;">読み込み中...</td></tr>';
         
         fetch('data/schedule.json')
             .then(response => {
@@ -102,14 +102,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     tr.innerHTML = `
                         <td style="padding: 8px 0; white-space: nowrap;">${item.date}</td>
-                        <td style="padding: 8px 0; word-break: keep-all;">${item.location}</td>
                     `;
                     scheduleTbody.appendChild(tr);
                 });
             })
             .catch(error => {
                 console.error('Error fetching schedule data:', error);
-                scheduleTbody.innerHTML = '<tr><td colspan="2" style="padding: 15px 0; text-align: center; color: #ff6b6b;">スケジュールの取得に失敗しました。</td></tr>';
+                scheduleTbody.innerHTML = '<tr><td colspan="1" style="padding: 15px 0; text-align: center; color: #ff6b6b;">スケジュールの取得に失敗しました。</td></tr>';
             });
     }
 
