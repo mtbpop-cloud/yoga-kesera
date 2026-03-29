@@ -3,18 +3,20 @@
    ========================================================================= */
    :root {
     /* Colors */
-    --color-primary: #e6a8af; /* Soft pastel pink */
-    --color-primary-dark: #cc8b91;
-    --color-primary-light: #fbe6e8;
-    --color-secondary: #e6d3c0; /* Warm beige */
+    --color-primary: #a4be9c; /* Sage green / Mint green */
+    --color-primary-dark: #46634b; /* Deep green */
+    --color-primary-light: #e4ede4; /* Light clean green */
     
-    --color-text-main: #4a4a4a;
-    --color-text-muted: #737373;
+    --color-secondary: #d4b26a; /* Elegant Gold */
+    --color-secondary-light: #ebd8af;
+    
+    --color-text-main: #384538; /* Soft green-tinted charcoal */
+    --color-text-muted: #748c74;
     --color-text-light: #ffffff;
     
-    --color-bg-base: #fcf9f9; /* Warm off-white */
+    --color-bg-base: #f8faf8; /* Warm off-white */
     --color-bg-light: #ffffff;
-    --color-bg-alt: #fff3f4; /* Very pale pink */
+    --color-bg-alt: #f1f6f1; /* Pale green-tinted bg */
     
     --color-line: #00B900; /* LINE app color */
     
@@ -148,6 +150,7 @@ h1, h2, h3, h4, h5, h6 {
     transition: all var(--transition-fast);
     letter-spacing: 0.05em;
     border: 2px solid transparent;
+    box-shadow: 0 4px 15px rgba(70, 99, 75, 0.15); /* Soft natural shadow */
 }
 
 .btn-sm {
@@ -167,20 +170,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-primary {
-    background-color: var(--color-primary);
+    background: linear-gradient(135deg, #dec076 0%, #b89146 100%);
     color: var(--color-text-light);
+    border: none;
 }
 
 .btn-primary:hover {
-    background-color: var(--color-primary-dark);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(143, 160, 143, 0.3);
+    box-shadow: 0 6px 20px rgba(184, 145, 70, 0.4);
+    filter: brightness(1.05);
 }
 
 .btn-outline {
     background-color: transparent;
     border-color: var(--color-primary);
-    color: var(--color-primary);
+    color: var(--color-primary-dark);
 }
 
 .btn-outline:hover {
@@ -1196,8 +1200,8 @@ h1, h2, h3, h4, h5, h6 {
 /* Offer badge on hero */
 .hero-badge {
     display: inline-block;
-    background-color: #ffeb99; /* pale yellow like flyer */
-    color: #333;
+    background-color: #f7eed8; /* pale organic beige */
+    color: var(--color-primary-dark);
     font-weight: bold;
     font-size: 1.4rem;
     padding: 15px 30px;
@@ -1205,7 +1209,7 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 20px;
     line-height: 1.4;
     text-align: center;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(110, 128, 110, 0.1);
     transform: rotate(2deg);
 }
 
@@ -1268,7 +1272,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .highlight-text {
-    color: #e65c5c;
+    color: var(--color-secondary); /* Dark Gold */
     font-weight: bold;
     font-size: 1.1rem;
 }
