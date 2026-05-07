@@ -302,19 +302,16 @@
 
                                     <div class="schedule-actual mt-3 mb-2"
                                         style="width: 100%; background: rgba(255,255,255,0.7); padding: 15px; border-radius: 8px; font-size: 1rem;">
-                                        <table
-                                            style="width: 100%; border-collapse: collapse; margin-bottom: 5px; text-align: center;">
-                                            <thead>
-                                                <tr style="border-bottom: 1px dashed var(--color-primary-light);">
-                                                    <th
-                                                        style="padding-bottom: 8px; font-weight: bold; color:var(--color-primary-dark); width: 100%;">
-                                                        レッスン<br>スケジュール</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="schedule-tbody">
-                                                <!-- Schedule data will be dynamically loaded here by js/script.js -->
-                                            </tbody>
-                                        </table>
+                                        <div style="font-weight: bold; color:var(--color-primary-dark); text-align: center; padding-bottom: 8px; border-bottom: 1px dashed var(--color-primary-light);">
+                                            レッスン<br>スケジュール
+                                        </div>
+                                        <div class="schedule-scroll-area" style="max-height: 150px; overflow-y: auto;">
+                                            <table style="width: 100%; border-collapse: collapse; text-align: center;">
+                                                <tbody id="schedule-tbody">
+                                                    <!-- Schedule data will be dynamically loaded here by js/script.js -->
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </li>
                                 <li>
